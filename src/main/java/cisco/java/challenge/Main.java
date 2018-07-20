@@ -16,16 +16,7 @@ public class Main {
                 break;
             case 1:
                 try {
-                    Map<String, Integer> result = new HashMap<>();
-                    Files.lines(Paths.get(args[0])).forEach(line -> {
-
-                        String[] words = line.split("\\s+");
-
-                        for(String word: words) {
-                            word = word.replaceAll("[^\\w]", "");
-                            result.merge(word, 1, Integer::sum);
-                        }
-                    });
+                    Map<String, Integer> result = parseWords(args[0]);
                     System.out.println(result);
                 } catch (IOException e) {
                     System.out.println("IO Exception occurred");
@@ -36,4 +27,20 @@ public class Main {
         }
 
     }
+
+    public static Map<String,Integer> parseWords(String filePath) throws IOException {
+        Map<String, Integer> result = new HashMap<>();
+        Files.lines(Paths.get(filePath)).forEach(line -> {
+
+            String[] words = line.split("[^\\w]");
+
+            for(String word: words) {
+                //word = word.replaceAll("[^\\w]", "");
+                result.merge(word, 1, Integer::sum);
+            }
+        });
+
+        return result;
+    }
+
 }

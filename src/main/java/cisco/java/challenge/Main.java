@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 public class Main {
 
@@ -12,7 +13,7 @@ public class Main {
 
         switch(args.length) {
             case 0:
-                System.out.println("");
+                System.out.println("Provide an argument which contains path to text file to be processed");
                 break;
             case 1:
                 try {
@@ -29,13 +30,13 @@ public class Main {
     }
 
     public static Map<String,Integer> parseWords(String filePath) throws IOException {
+        Pattern nonWord = Pattern.compile("[^\\w]");
         Map<String, Integer> result = new HashMap<>();
         Files.lines(Paths.get(filePath)).forEach(line -> {
 
-            String[] words = line.split("[^\\w]");
+            String[] words = nonWord.split(line);
 
             for(String word: words) {
-                //word = word.replaceAll("[^\\w]", "");
                 result.merge(word, 1, Integer::sum);
             }
         });
